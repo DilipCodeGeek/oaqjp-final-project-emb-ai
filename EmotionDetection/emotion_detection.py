@@ -2,16 +2,10 @@ import requests
 import json
 
 def emotion_detector(text_to_analyze):
-    """
-    Sends text to Watson NLP EmotionPredict service
-    and returns formatted emotion analysis.
-    """
 
     url = "https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict"
 
-    headers = {
-        "grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"
-    }
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
 
     input_json = {
         "raw_document": {
@@ -19,12 +13,10 @@ def emotion_detector(text_to_analyze):
         }
     }
 
-    response = requests.post(url, headers=headers, json=input_json)
+    response = requests.post(url, json=input_json, headers=header)
 
-    # Convert JSON string response to dictionary
     formatted_response = json.loads(response.text)
 
-    # Extract emotions
     emotions = formatted_response["emotionPredictions"][0]["emotion"]
 
     anger = emotions["anger"]
@@ -33,10 +25,8 @@ def emotion_detector(text_to_analyze):
     joy = emotions["joy"]
     sadness = emotions["sadness"]
 
-    # Determine dominant emotion
     dominant_emotion = max(emotions, key=emotions.get)
 
-    # Return required formatted output
     return {
         "anger": anger,
         "disgust": disgust,
