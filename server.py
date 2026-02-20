@@ -13,8 +13,9 @@ def emotionDetector():
 
     response = emotion_detector(text_to_analyze)
 
-    if response is None:
-        return "Invalid input! Please try again."
+    # ✅ Error handling when dominant_emotion is None
+    if response["dominant_emotion"] is None:
+        return "Invalid text! Please try again!"
 
     return (
         "For the given statement, the system response is "
